@@ -1,0 +1,78 @@
+name: pocketflow
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.5.1
+  go_router: ^13.2.0
+  firebase_core: ^4.4.0
+  firebase_auth: ^6.1.4
+  cloud_firestore: ^6.1.2
+  dio: ^5.4.0
+  dartz: ^0.10.1
+  connectivity_plus: ^5.0.2
+  shared_preferences: ^2.2.2
+  animations: ^2.1.1
+  flutter_animate: ^4.5.2
+  firebase_storage: ^13.0.6
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.0
+  # flutter_facebook_auth: ^7.1.1
+  flutter_screenutil: ^5.9.3
+  crypto: ^3.0.3
+  shimmer: ^3.0.0
+  fl_chart: ^1.2.0
+
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^5.0.0
+
+
+flutter:
+
+ 
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/images/png/
+    - assets/images/svg/
+    - assets/icons/svg/
+    - assets/icons/png/
+
+ 
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter_18pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter_28pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter_28pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter_28pt-Bold.ttf
+          weight: 700
+   
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package

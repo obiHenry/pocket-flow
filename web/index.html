@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="pocketflow">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>pocketflow</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Firebase SDK (must be before Flutter bootstrap) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+</head>
+<body>
+
+  <script>
+    // Paste YOUR firebaseConfig here (from Firebase Console → Project Settings → Web App)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDMz5BJ4CEgLYauOSeAwvrjfzcb4XuEuds",
+      authDomain: "pocket-flow-a2819.firebaseapp.com",
+      projectId: "pocket-flow-a2819",
+      storageBucket: "pocket-flow-a2819.firebasestorage.app",
+      messagingSenderId: "558685601928",
+      appId: "1:558685601928:web:b3cde839cc78d0d20b5f3d",
+      measurementId: "G-BENFDGE7PN"
+
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <script
+    src="flutter_bootstrap.js"
+    onload="
+      _flutter.loader.load({
+        onEntrypointLoaded: async function(engineInitializer) {
+          const appRunner = await engineInitializer.initializeEngine({
+            renderer: 'html'
+          });
+          await appRunner.runApp();
+        }
+      });
+    ">
+</script>
+</body>
+</html>
