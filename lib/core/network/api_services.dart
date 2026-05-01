@@ -61,16 +61,10 @@ abstract class ApiService {
         );
       }
     } on DioException catch (e) {
-      // Catch Dio-specific errors and convert them to your custom AppException hierarchy
       return Left(AppException.fromDioException(e));
+    } catch (e) {
+      return Left(UnknownException('An unexpected error occurred: ${e.toString()}'));
     }
-
-    // catch (e) {
-    //   // Catch any other unexpected errors that are not DioExceptions
-    //   return Left(
-    //     UnknownException('An unexpected error occurred: ${e.toString()}'),
-    //   );
-    // }
   }
 
   /// Convenience method for making GET requests.

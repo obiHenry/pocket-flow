@@ -13,11 +13,11 @@ class ExchangeRateNotifier extends AsyncNotifier<Map<String, double>> {
 
   Future<Map<String, double>> _fetchRates() async {
     // 1. Try to get from Local Storage first
-    final cachedData = ref.read(localStorageProvider).getRates();
+    final cachedData = await ref.read(localStorageProvider).getRates();
     final lastFetch = ref.read(localStorageProvider).getLastFetchTime();
 
     // 2. If cache exists and is fresh (less than 60 mins), use it
-    if (cachedData != null && lastFetch != null) {
+    if (cachedData.isNotEmpty && lastFetch != null) {
       final diff = DateTime.now().difference(lastFetch);
       if (diff.inMinutes < 60) return cachedData;
     }
@@ -30,10 +30,10 @@ class ExchangeRateNotifier extends AsyncNotifier<Map<String, double>> {
     return result.fold(
       (error) {
         print('Error fetching exchange rates: $error');
-        return cachedData ?? {}; // Fallback to old cache if API fails
+        return cachedData.isNotEmpty ? cachedData : {};
       },
       (r) {
-        // Save to cache for next time
+        print(r.rates);
         ref.read(localStorageProvider).saveRates(r.rates);
         return r.rates;
       },

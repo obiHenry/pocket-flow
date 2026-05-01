@@ -20,62 +20,80 @@ class HomeScreen extends ConsumerWidget {
     final bool isDesktop = ResponsiveHelper.isDesktop(context);
     final transactionAsync = ref.watch(transactionProvider);
 
+    final hPadding = AppSpacing.getHorizontalPadding(context);
+
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AnimationHelper.fadeInSlide(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AnimationHelper.fadeInSlide(
-                    delay: 50,
-                    child: CurrencyTicker(),
-                  ),
-                  AppSpacing.vLg,
-                  Text("Overview", style: AppTextStyles.h2),
-                  const Text(
-                    "Your financial health at a glance",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            pinned: true,
+            automaticallyImplyLeading: false,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 16,
+              ),
+              title: Padding(padding: hPadding, child: const CurrencyTicker()),
+            ),
+            // flexibleSpace: (
+            //   preferredSize: const Size.fromHeight(36),
+            //   child: Padding(padding: hPadding, child: const CurrencyTicker()),
+            // ),
+          ),
+
+          SliverToBoxAdapter(
+            child: AnimationHelper.fadeInSlide(
+              child: Padding(
+                padding: hPadding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Overview", style: AppTextStyles.h2),
+                    const Text(
+                      "Your financial health at a glance",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    AppSpacing.vMd,
+                  ],
+                ),
               ),
             ),
+          ),
 
-            AppSpacing.vLg,
-
-            if (isDesktop)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(flex: 2, child: _buildMainContent()),
-                  AppSpacing.hLg,
-                  Expanded(
-                    flex: 1,
-                    child: TransactionTile(
-                      transaction: transactionAsync,
-                      fromTab: true,
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: hPadding,
+              child: isDesktop
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(flex: 2, child: _buildMainContent()),
+                        AppSpacing.hLg,
+                        Expanded(
+                          flex: 1,
+                          child: TransactionTile(
+                            transaction: transactionAsync,
+                            fromTab: true,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        _buildMainContent(),
+                        AppSpacing.vLg,
+                        TransactionTile(
+                          transaction: transactionAsync,
+                          fromTab: true,
+                          headerText: 'Recent Transactions',
+                          seeAllText: 'See all',
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              )
-            else
-              Column(
-                children: [
-                  _buildMainContent(),
-                  AppSpacing.vLg,
-                  TransactionTile(
-                    transaction: transactionAsync,
-                    fromTab: true,
-                    headerText: 'Recent Transactions',
-                    seeAllText: 'See all',
-                  ),
-                ],
-              ),
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

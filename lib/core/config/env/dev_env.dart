@@ -11,5 +11,5 @@ class DevEnv implements Env {
   bool get enableLogs => true;
 
   @override
-  String get exchangeUrl => 'https://api.frankfurter.dev/v1';
+  String get exchangeUrl => 'https://v6.exchangerate-api.com/v6/';
 }

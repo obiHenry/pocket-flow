@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pocketflow/features/exchange_rates/presentation/providers/exchange_rate_provider.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -14,6 +15,7 @@ class BalanceCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(userProvider);
+    final exchangeRate = ref.watch(exchangeRateProvider).valueOrNull ?? {};
     final transactions = ref.watch(transactionProvider).valueOrNull ?? [];
 
     return userAsync.when(
@@ -55,12 +57,23 @@ class BalanceCard extends ConsumerWidget {
                 style: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
               ),
               AppSpacing.vSm,
-              Text(
-                "₦${balance.toStringAsFixed(2)}",
-                style: AppTextStyles.h1.copyWith(
-                  color: Colors.white,
-                  fontSize: 32,
-                ),
+              Row(
+                children: [
+                  Text(
+                    "₦${balance.toStringAsFixed(2)}",
+                    style: AppTextStyles.h1.copyWith(
+                      color: Colors.white,
+                      fontSize: 32,
+                    ),
+                  ),
+                  Text(
+                    " ≈ \$${(balance / (exchangeRate['USD'] ?? 1)).toStringAsFixed(2)}",
+                    style: AppTextStyles.h1.copyWith(
+                      color: Colors.white,
+                      fontSize: 32,
+                    ),
+                  ),
+                ],
               ),
               AppSpacing.vLg,
               Row(
