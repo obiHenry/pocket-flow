@@ -15,26 +15,39 @@ class BalanceCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(userProvider);
-    final exchangeRate = ref.watch(exchangeRateProvider).valueOrNull ?? {};
-    final transactions = ref.watch(transactionProvider).valueOrNull ?? [];
+
+    // select() — widget only rebuilds when the USD rate changes, not on every
+    // exchange-rate map update (e.g. when other currencies refresh).
+    final usdRate = ref.watch(
+      exchangeRateProvider.select((async) => async.valueOrNull?['USD'] ?? 1.0),
+    );
+
+    // select() — widget only rebuilds when monthly income or expense totals
+    // actually change. Adding a transaction in a different month, or pagination
+    // loading more old records, will NOT trigger a rebuild here.
+    final (:income, :expense) = ref.watch(
+      transactionProvider.select((async) {
+        final txs = async.valueOrNull ?? [];
+        final now = DateTime.now();
+        final month = txs.where(
+          (t) => t.date.year == now.year && t.date.month == now.month,
+        );
+        return (
+          income: month
+              .where((t) => t.type == 'Credit')
+              .fold(0.0, (s, t) => s + t.amount),
+          expense: month
+              .where((t) => t.type == 'Debit')
+              .fold(0.0, (s, t) => s + t.amount),
+        );
+      }),
+    );
 
     return userAsync.when(
       loading: () => const SkeletonBox(height: 200, width: double.infinity),
       error: (err, _) => const Center(child: Text("Failed to load balance")),
       data: (user) {
         final balance = user?.balance ?? 0.0;
-
-        final now = DateTime.now();
-        final monthTxs = transactions.where(
-          (tx) => tx.date.year == now.year && tx.date.month == now.month,
-        );
-        final income = monthTxs
-            .where((tx) => tx.type == 'Credit')
-            .fold(0.0, (sum, tx) => sum + tx.amount);
-        final expense = monthTxs
-            .where((tx) => tx.type == 'Debit')
-            .fold(0.0, (sum, tx) => sum + tx.amount);
-
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(24),
@@ -67,7 +80,7 @@ class BalanceCard extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    " ≈ \$${(balance / (exchangeRate['USD'] ?? 1)).toStringAsFixed(2)}",
+                    " ≈ \$${(balance / usdRate).toStringAsFixed(2)}",
                     style: AppTextStyles.h1.copyWith(
                       color: Colors.white,
                       fontSize: 32,

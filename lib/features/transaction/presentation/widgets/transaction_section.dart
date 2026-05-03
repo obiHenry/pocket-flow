@@ -83,7 +83,7 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
           return _mobileListView(list);
         }
 
-        // Embedded / tab view — Column, no pagination scroll.
+        // Embedded / tab view — shows up to 5 recent items, no pagination scroll.
         if (widget.fromTab) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +101,7 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
                 ),
               ],
               AppSpacing.vMd,
-              _mobileColumn(list),
+              _mobileColumn(list.take(5).toList()),
             ],
           );
         }
@@ -157,7 +157,14 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
 
   Widget _mobileColumn(List<TransactionModel> transactions) {
     if (transactions.isEmpty) return const EmptyState();
-    return Column(children: transactions.map(_mobileTile).toList());
+    // shrinkWrap + NeverScrollableScrollPhysics so this list participates in
+    // the parent scroll (CustomScrollView / Column) without a second scroll axis.
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: transactions.length,
+      itemBuilder: (_, i) => _mobileTile(transactions[i]),
+    );
   }
 
   Widget _mobileTile(TransactionModel e) {
@@ -212,6 +219,25 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
     );
   }
 
+  // Returns a windowed list of page numbers around [current], with -1 as a
+  // sentinel for the ellipsis gap. Caps visible chips at 7 to prevent overflow
+  // on large datasets (e.g. 1000+ transactions → 50+ pages).
+  List<int> _windowedPages(int total, int current) {
+    if (total <= 7) return List.generate(total, (i) => i + 1);
+
+    final Set<int> show = {1, total, current};
+    if (current > 1) show.add(current - 1);
+    if (current < total) show.add(current + 1);
+
+    final sorted = show.toList()..sort();
+    final result = <int>[];
+    for (int i = 0; i < sorted.length; i++) {
+      if (i > 0 && sorted[i] - sorted[i - 1] > 1) result.add(-1); // gap
+      result.add(sorted[i]);
+    }
+    return result;
+  }
+
   Widget _desktopPaginationBar({
     required int pagesLoaded,
     required int currentPage,
@@ -224,7 +250,6 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Previous button
           IconButton(
             onPressed: currentPage > 1
                 ? () => setState(() => _currentPage--)
@@ -233,9 +258,14 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
             tooltip: 'Previous',
           ),
           const SizedBox(width: 4),
-          // Page number chips
-          ...List.generate(pagesLoaded, (i) {
-            final page = i + 1;
+          // Windowed page chips — at most 7 items visible regardless of total pages
+          ..._windowedPages(pagesLoaded, currentPage).map((page) {
+            if (page == -1) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4),
+                child: Text('…', style: TextStyle(color: Colors.grey)),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: _PageChip(
@@ -246,7 +276,6 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
             );
           }),
           const SizedBox(width: 4),
-          // Load More / Next button
           if (isOnLastPage && hasMore)
             TextButton.icon(
               onPressed: () => _goToNextPage(pagesLoaded, hasMore),

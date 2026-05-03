@@ -17,19 +17,28 @@ class WalletScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(userProvider);
-    final transactionAsync = ref.watch(transactionProvider);
-    final transactions = transactionAsync.valueOrNull ?? [];
 
-    final now = DateTime.now();
-    final monthTxs = transactions.where(
-      (tx) => tx.date.year == now.year && tx.date.month == now.month,
+    // select() — only rebuilds when monthly income/expense totals change.
+    // Pagination loading older records or changes in other months are ignored.
+    final (:monthlyIncome, :monthlyExpense) = ref.watch(
+      transactionProvider.select((async) {
+        final txs = async.valueOrNull ?? [];
+        final now = DateTime.now();
+        final month = txs.where(
+          (t) => t.date.year == now.year && t.date.month == now.month,
+        );
+        return (
+          monthlyIncome: month
+              .where((t) => t.type == 'Credit')
+              .fold(0.0, (s, t) => s + t.amount),
+          monthlyExpense: month
+              .where((t) => t.type == 'Debit')
+              .fold(0.0, (s, t) => s + t.amount),
+        );
+      }),
     );
-    final monthlyIncome = monthTxs
-        .where((tx) => tx.type == 'Credit')
-        .fold(0.0, (s, tx) => s + tx.amount);
-    final monthlyExpense = monthTxs
-        .where((tx) => tx.type == 'Debit')
-        .fold(0.0, (s, tx) => s + tx.amount);
+
+    final transactionAsync = ref.watch(transactionProvider);
 
     return Scaffold(
       body: userAsync.when(

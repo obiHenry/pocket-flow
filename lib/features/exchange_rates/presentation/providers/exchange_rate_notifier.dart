@@ -6,7 +6,7 @@ import 'package:pocketflow/features/exchange_rates/presentation/providers/exchan
 
 import '../../../../core/local_storage/local_storage_provider.dart';
 
-class ExchangeRateNotifier extends AsyncNotifier<Map<String, double>> {
+class ExchangeRateNotifier extends AutoDisposeAsyncNotifier<Map<String, double>> {
   @override
   FutureOr<Map<String, double>> build() async {
     return _fetchRates();

@@ -13,7 +13,10 @@ final exchangeRateDataSourceProvider = Provider<ExchangeRateRemoteDataSource>(
 final exchangeRateRepositoryProvider = Provider<ExchangeRateRepository>(
   (ref) => ExchangeRateRepositoryImpl(ref.read(exchangeRateDataSourceProvider)),
 );
+// autoDispose: exchange rates are only consumed on the home screen ticker.
+// Re-initialisation is cheap because _fetchRates() checks the 60-min
+// SharedPreferences cache before touching the network.
 final exchangeRateProvider =
-    AsyncNotifierProvider<ExchangeRateNotifier, Map<String, double>>(() {
+    AsyncNotifierProvider.autoDispose<ExchangeRateNotifier, Map<String, double>>(() {
       return ExchangeRateNotifier();
     });

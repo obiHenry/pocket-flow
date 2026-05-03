@@ -5,7 +5,7 @@ import 'package:pocketflow/features/wallet/presentation/providers/wallet_state.d
 
 import '../../data/models/wallet_model.dart';
 
-class WalletNotifier extends AsyncNotifier<WalletState> {
+class WalletNotifier extends AutoDisposeAsyncNotifier<WalletState> {
   WalletNotifier() : super();
 
   @override

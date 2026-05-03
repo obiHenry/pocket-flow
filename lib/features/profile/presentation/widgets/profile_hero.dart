@@ -48,8 +48,8 @@ class ProfileHero extends StatelessWidget {
 }
 
 class SubscriptionBadge extends StatelessWidget {
-  bool isPro;
-  SubscriptionBadge({super.key, this.isPro = true});
+  final bool isPro;
+  const SubscriptionBadge({super.key, this.isPro = true});
 
   @override
   Widget build(BuildContext context) {

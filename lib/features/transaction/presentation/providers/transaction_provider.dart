@@ -16,6 +16,10 @@ final transactionRepositoryProvider = Provider<TransactionRepository>(
   (ref) => TransactionRepositoryImpl(ref.read(transactionDataSourceProvider)),
 );
 
+// No autoDispose: transactions are shared by the home tab (recent list) and the
+// transactions tab (full paginated list). Disposing on tab switch would discard
+// the pagination cursor, the in-memory offline queue, and the local cache
+// written during the session — forcing a cold Firestore fetch on every return.
 final transactionProvider =
     AsyncNotifierProvider<TransactionNotifier, List<TransactionModel>>(
       () => TransactionNotifier(),
