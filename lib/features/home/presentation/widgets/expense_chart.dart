@@ -48,8 +48,7 @@ class ExpenseChart extends ConsumerWidget {
     return transactionAsync.when(
       loading: () =>
           SkeletonBox(height: isDesktop ? 400 : 250, width: double.infinity),
-      error: (err, _) =>
-          const Center(child: Text("Failed to load activity")),
+      error: (err, _) => const Center(child: Text("Failed to load activity")),
       data: (transactions) {
         final weeklyData = _buildWeeklyData(transactions);
         return Column(
@@ -123,7 +122,7 @@ class TransactionsBarChart extends StatelessWidget {
       if (item.income > max) max = item.income;
       if (item.expense > max) max = item.expense;
     }
-    return max * 1.2; // add 20% padding on top
+    return max == 0 ? 1 : max * 1.2;
   }
 
   @override

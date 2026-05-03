@@ -83,6 +83,32 @@ class TransactionModel extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userId': userId,
+      'merchantName': merchantName,
+      'category': category,
+      'type': type,
+      'amount': amount,
+      'date': date.toIso8601String(),
+      'hasReceipt': hasReceipt,
+    };
+  }
+
+  factory TransactionModel.fromJson(Map<String, dynamic> json) {
+    return TransactionModel(
+      id: json['id'] as String,
+      userId: json['userId'] as String? ?? '',
+      merchantName: json['merchantName'] as String,
+      category: json['category'] as String,
+      type: json['type'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      date: DateTime.parse(json['date'] as String),
+      hasReceipt: json['hasReceipt'] as bool? ?? false,
+    );
+  }
+
   Map<String, dynamic> toFirebase() {
     return {
       // 'id' is NOT sent on initial create — Firestore generates it.

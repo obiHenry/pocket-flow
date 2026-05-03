@@ -36,6 +36,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               title: Padding(padding: hPadding, child: const CurrencyTicker()),
             ),
+            //
             // flexibleSpace: (
             //   preferredSize: const Size.fromHeight(36),
             //   child: Padding(padding: hPadding, child: const CurrencyTicker()),
@@ -50,9 +51,9 @@ class HomeScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Overview", style: AppTextStyles.h2),
-                    const Text(
+                    Text(
                       "Your financial health at a glance",
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Theme.of(context).hintColor),
                     ),
                     AppSpacing.vMd,
                   ],

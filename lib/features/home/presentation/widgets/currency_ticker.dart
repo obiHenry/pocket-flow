@@ -93,7 +93,7 @@ class _CurrencyTickerState extends ConsumerState<CurrencyTicker>
                     Text(
                       '₦${entry.value.toStringAsFixed(2)}',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: Colors.green,
+                        color: Colors.green.shade400,
                       ),
                     ),
                   ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/utils/responsive_helper.dart';
+import '../../../../shared/widgets/offline_banner.dart';
 import '../widgets/app_drawer.dart';
 
 class DashboardPage extends ConsumerWidget {
@@ -23,14 +24,21 @@ class DashboardPage extends ConsumerWidget {
           ? AppBar(title: const Text("PocketFlow"))
           : null,
 
-      body: Row(
+      body: Column(
         children: [
-          // 2. If Desktop/Tablet, the Sidebar is a permanent part of the Row
-          if (showPermanentSidebar)
-            const SizedBox(width: 280, child: AppDrawer(isPermanent: true)),
+          const OfflineBanner(),
+          Expanded(
+            child: Row(
+              children: [
+                // 2. If Desktop/Tablet, the Sidebar is a permanent part of the Row
+                if (showPermanentSidebar)
+                  const SizedBox(width: 280, child: AppDrawer(isPermanent: true)),
 
-          // 3. The Main Content (Wallet Core)
-          Expanded(child: child),
+                // 3. The Main Content (Wallet Core)
+                Expanded(child: child),
+              ],
+            ),
+          ),
         ],
       ),
     );

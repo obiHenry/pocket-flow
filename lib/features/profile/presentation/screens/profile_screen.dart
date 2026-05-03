@@ -6,6 +6,7 @@ import '../../../../core/animations/animation_helper.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/theme/theme_provider.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../providers/user_provider.dart';
 import '../widgets/profile_hero.dart';
@@ -43,8 +44,8 @@ class ProfileScreen extends ConsumerWidget {
                 SliverPadding(
                   padding: const EdgeInsets.all(24),
                   sliver: isDesktop
-                      ? _buildDesktopGrid() // Desktop: 2-column grid
-                      : _buildMobileList(), // Mobile: 1-column list
+                      ? _buildDesktopGrid(ref) // Desktop: 2-column grid
+                      : _buildMobileList(ref), // Mobile: 1-column list
                 ),
 
                 // Footer
@@ -57,7 +58,9 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildMobileList() {
+  Widget _buildMobileList(WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+    final isDark = themeMode == ThemeMode.dark;
     return SliverList(
       delegate: SliverChildListDelegate([
         SettingsSection(
@@ -87,7 +90,10 @@ class ProfileScreen extends ConsumerWidget {
             SettingsTile(
               icon: Icons.dark_mode_outlined,
               title: "Dark Mode",
-              trailing: Switch.adaptive(value: false, onChanged: (v) {}),
+              trailing: Switch.adaptive(
+                value: isDark,
+                onChanged: (_) => ref.read(themeProvider.notifier).toggle(),
+              ),
             ),
             SettingsTile(
               icon: Icons.notifications_none,
@@ -117,7 +123,9 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildDesktopGrid() {
+  Widget _buildDesktopGrid(WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+    final isDark = themeMode == ThemeMode.dark;
     return SliverGrid(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -152,7 +160,10 @@ class ProfileScreen extends ConsumerWidget {
             SettingsTile(
               icon: Icons.dark_mode_outlined,
               title: "Dark Mode",
-              trailing: Switch.adaptive(value: false, onChanged: (v) {}),
+              trailing: Switch.adaptive(
+                value: isDark,
+                onChanged: (_) => ref.read(themeProvider.notifier).toggle(),
+              ),
             ),
             SettingsTile(
               icon: Icons.notifications_none,

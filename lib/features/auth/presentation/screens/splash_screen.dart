@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pocketflow/core/config/router/route_names.dart';
-import 'package:pocketflow/main.dart';
+import 'package:pocketflow/core/local_storage/local_storage_provider.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
-import '../../../../core/local_storage/local_storage_services.dart';
 import '../providers/auth_provider.dart';
 import '../providers/auth_state.dart';
 

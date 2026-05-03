@@ -6,7 +6,7 @@ import 'package:pocketflow/core/config/router/route_names.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
-import '../../../../main.dart';
+import '../../../../core/local_storage/local_storage_provider.dart';
 import '../../../../shared/widgets/app_button.dart' show AppButton;
 
 class OnboardingScreen extends ConsumerStatefulWidget {

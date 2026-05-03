@@ -27,7 +27,7 @@ class SettingsSection extends StatelessWidget {
           decoration: BoxDecoration(
             // color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+            border: Border.all(color: Theme.of(context).dividerColor),
           ),
           child: Column(children: items),
         ),

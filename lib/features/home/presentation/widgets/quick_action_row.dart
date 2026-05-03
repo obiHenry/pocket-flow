@@ -12,10 +12,9 @@ class QuickActionsRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        // Subtle border to define the section on Web/Desktop
-        border: Border.all(color: Colors.grey.shade100),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -80,7 +79,7 @@ class _QuickActionItem extends StatelessWidget {
             label,
             style: AppTextStyles.bodySmall.copyWith(
               fontWeight: FontWeight.w600,
-              color: Colors.grey.shade800,
+              color: Theme.of(context).textTheme.bodySmall?.color,
             ),
           ),
         ],

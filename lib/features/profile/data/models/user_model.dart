@@ -23,7 +23,10 @@ class UserModel extends AppUser {
   });
 
   // 1. Convert Firestore Document to UserModel
-  factory UserModel.fromMap(Map<String, dynamic> map, String documentId) {
+  factory UserModel.fromMap(Map<String, dynamic> map, String documentId) =>
+      UserModel.from(map, documentId);
+
+  factory UserModel.from(Map<String, dynamic> map, String documentId) {
     return UserModel(
       uid: documentId,
       displayName: map['displayName'] as String?,
@@ -86,6 +89,40 @@ class UserModel extends AppUser {
       isEmailVerified: isEmailVerified ?? this.isEmailVerified,
       balance: balance ?? this.balance,
       plan: plan ?? this.plan,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': uid,
+      'displayName': displayName,
+      'email': email,
+      'photoUrl': photoUrl,
+      'currency': currency,
+      'balance': balance,
+      'isPremium': isPremium,
+      'plan': plan,
+      'isEmailVerified': isEmailVerified,
+      'phoneNumber': phoneNumber,
+      'createdAt': createdAt?.toIso8601String(),
+    }..removeWhere((_, v) => v == null);
+  }
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      uid: json['uid'] as String?,
+      displayName: json['displayName'] as String?,
+      email: json['email'] as String?,
+      photoUrl: json['photoUrl'] as String?,
+      currency: json['currency'] as String? ?? 'USD',
+      balance: (json['balance'] as num?)?.toDouble(),
+      isPremium: json['isPremium'] as bool? ?? false,
+      plan: json['plan'] as String? ?? 'free',
+      isEmailVerified: json['isEmailVerified'] as bool? ?? false,
+      phoneNumber: json['phoneNumber'] as String?,
+      createdAt: json['createdAt'] != null
+          ? DateTime.tryParse(json['createdAt'] as String)
+          : null,
     );
   }
 

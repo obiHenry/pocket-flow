@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pocketflow/core/constants/app_text_styles.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
+import '../../../exchange_rates/presentation/providers/exchange_rate_provider.dart';
 
-class CardStack extends StatelessWidget {
+class CardStack extends ConsumerWidget {
   final double balance;
   final double monthlyExpense;
   final double monthlyIncome;
@@ -17,11 +19,13 @@ class CardStack extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop = ResponsiveHelper.isDesktop(context);
-
+    final exchangeRate = ref.watch(exchangeRateProvider).valueOrNull ?? {};
     final total = monthlyIncome + monthlyExpense;
-    final spendingProgress = total > 0 ? (monthlyExpense / total).clamp(0.0, 1.0) : 0.0;
+    final spendingProgress = total > 0
+        ? (monthlyExpense / total).clamp(0.0, 1.0)
+        : 0.0;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -49,16 +53,32 @@ class CardStack extends StatelessWidget {
                         color: Colors.white.withValues(alpha: 0.7),
                       ),
                     ),
-                    const Icon(Icons.contactless, color: Colors.white, size: 28),
+                    const Icon(
+                      Icons.contactless,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ],
                 ),
                 const Spacer(),
-                Text(
-                  "₦${balance.toStringAsFixed(2)}",
-                  style: AppTextStyles.h1.copyWith(
-                    color: Colors.white,
-                    fontSize: 32,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "₦${balance.toStringAsFixed(2)}",
+                      style: AppTextStyles.h1.copyWith(
+                        color: Colors.white,
+                        fontSize: 32,
+                      ),
+                    ),
+
+                    Text(
+                      " ≈ \$${(balance / (exchangeRate['USD'] ?? 1)).toStringAsFixed(2)}",
+                      style: AppTextStyles.h1.copyWith(
+                        color: Colors.white,
+                        fontSize: 32,
+                      ),
+                    ),
+                  ],
                 ),
                 const Spacer(),
                 Text(

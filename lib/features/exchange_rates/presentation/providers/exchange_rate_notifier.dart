@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pocketflow/features/exchange_rates/presentation/providers/exchange_rate_provider.dart';
 
-import '../../../../main.dart';
+import '../../../../core/local_storage/local_storage_provider.dart';
 
 class ExchangeRateNotifier extends AsyncNotifier<Map<String, double>> {
   @override
@@ -12,29 +13,29 @@ class ExchangeRateNotifier extends AsyncNotifier<Map<String, double>> {
   }
 
   Future<Map<String, double>> _fetchRates() async {
-    // 1. Try to get from Local Storage first
-    final cachedData = await ref.read(localStorageProvider).getRates();
-    final lastFetch = ref.read(localStorageProvider).getLastFetchTime();
+    final storage = ref.read(localStorageProvider);
+    final cachedData = await storage.getRates();
+    final lastFetch = storage.getLastFetchTime();
 
-    // 2. If cache exists and is fresh (less than 60 mins), use it
     if (cachedData.isNotEmpty && lastFetch != null) {
       final diff = DateTime.now().difference(lastFetch);
       if (diff.inMinutes < 60) return cachedData;
     }
 
-    // 3. Otherwise, fetch from API (Dio)
+    // Skip the API call entirely when offline
+    final connResult = await Connectivity().checkConnectivity();
+    if (connResult == ConnectivityResult.none) {
+      return cachedData.isNotEmpty ? cachedData : {};
+    }
+
     final result = await ref
         .read(exchangeRateRepositoryProvider)
         .getLatestRates(base: 'NGN');
 
     return result.fold(
-      (error) {
-        print('Error fetching exchange rates: $error');
-        return cachedData.isNotEmpty ? cachedData : {};
-      },
+      (error) => cachedData.isNotEmpty ? cachedData : {},
       (r) {
-        print(r.rates);
-        ref.read(localStorageProvider).saveRates(r.rates);
+        storage.saveRates(r.rates);
         return r.rates;
       },
     );

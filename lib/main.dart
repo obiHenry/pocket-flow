@@ -6,7 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pocketflow/core/config/env/env_config.dart';
 import 'package:pocketflow/core/config/router/app_router.dart';
 import 'package:pocketflow/core/enums/environment.dart';
+import 'package:pocketflow/core/local_storage/local_storage_provider.dart';
 import 'package:pocketflow/core/local_storage/local_storage_services.dart';
+import 'package:pocketflow/core/offline/offline_queue_provider.dart';
+import 'package:pocketflow/core/offline/offline_queue_service.dart';
 import 'package:pocketflow/core/theme/app_theme.dart';
 import 'package:pocketflow/core/utils/responsive_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,10 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/theme/theme_provider.dart';
 import 'firebase_options.dart';
 
-final localStorageProvider = Provider<LocalStorageService>((ref) {
-  // This will be overridden in main.dart
-  throw UnimplementedError();
-});
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -33,6 +32,9 @@ void main() async {
       overrides: [
         localStorageProvider.overrideWithValue(
           LocalStorageService(sharedPrefs),
+        ),
+        offlineQueueProvider.overrideWithValue(
+          OfflineQueueService(sharedPrefs),
         ),
       ],
       child: MyApp(),

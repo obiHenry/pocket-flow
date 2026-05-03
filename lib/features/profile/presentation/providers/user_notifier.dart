@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/local_storage/local_storage_provider.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../data/models/user_model.dart';
 import '../../domain/repository/user_repository.dart';
@@ -22,13 +25,32 @@ class UserNotifier extends AsyncNotifier<UserModel?> {
     return _fetchUser();
   }
 
-  Future<UserModel> _fetchUser() async {
-    final result = await _repo.fetchCurrentUser();
+  Future<bool> _isOnline() async {
+    final result = await Connectivity().checkConnectivity();
+    return result != ConnectivityResult.none;
+  }
 
+  Future<UserModel> _fetchUser() async {
+    if (!await _isOnline()) {
+      final raw = ref.read(localStorageProvider).getCachedUserRaw();
+      if (raw != null) {
+        final map = Map<String, dynamic>.from(jsonDecode(raw) as Map);
+        final user = UserModel.fromJson(map);
+        userDetails = user;
+        return user;
+      }
+    }
+
+    final result = await _repo.fetchCurrentUser();
     return result.fold((exception) => throw exception, (user) {
       userDetails = user;
+      _cacheUser(user);
       return userDetails!;
     });
+  }
+
+  void _cacheUser(UserModel user) {
+    ref.read(localStorageProvider).cacheUserRaw(jsonEncode(user.toJson()));
   }
 
   // ---------------------------------------------------------------------------
