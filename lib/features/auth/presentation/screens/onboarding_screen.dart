@@ -48,6 +48,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       final localService = ref.read(localStorageProvider);
       await localService.saveOnboardingStatus();
 
+      if (!mounted) return;
+
       context.push(RouteNames.signUp);
     }
   }

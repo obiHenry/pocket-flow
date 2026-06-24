@@ -17,7 +17,7 @@ class AppDrawer extends ConsumerWidget {
 
   Future<void> _onLogoutTap(BuildContext context, WidgetRef ref) async {
     final state = ref.read(authNotifierProvider);
-    final confirmed = await showDialog<bool>(
+    await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Logout'),

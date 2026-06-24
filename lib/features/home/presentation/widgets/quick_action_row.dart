@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/app_logger.dart';
 
 class QuickActionsRow extends StatelessWidget {
   const QuickActionsRow({super.key});
@@ -22,22 +23,25 @@ class QuickActionsRow extends StatelessWidget {
           _QuickActionItem(
             icon: Icons.send_rounded,
             label: "Send",
-            onTap: () => print("Navigate to Send"),
+            onTap: () => logger.d("Navigate to Send"),
+            color: AppColors.success,
           ),
           _QuickActionItem(
             icon: Icons.account_balance_wallet_rounded,
             label: "Top-up",
-            onTap: () => print("Navigate to Top-up"),
+            onTap: () => logger.d("Navigate to Top-up"),
+            color: AppColors.primary,
           ),
           _QuickActionItem(
             icon: Icons.receipt_long_rounded,
             label: "Bills",
-            onTap: () => print("Navigate to Bills"),
+            onTap: () => logger.d("Navigate to Bills"),
+            color: AppColors.warning,
           ),
           _QuickActionItem(
             icon: Icons.grid_view_rounded,
             label: "More",
-            onTap: () => print("Show More Options"),
+            onTap: () => logger.d("Show More Options"),
           ),
         ],
       ),
@@ -69,7 +73,7 @@ class _QuickActionItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: (color ?? AppColors.primary).withOpacity(0.1),
+              color: (color ?? AppColors.primary).withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: color ?? AppColors.primary, size: 28),

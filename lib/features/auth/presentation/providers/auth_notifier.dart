@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/utils/app_logger.dart';
 import '../../domain/repository/auth_repository.dart';
 import 'auth_state.dart';
 
@@ -37,7 +38,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     // 1. Create the Firebase Auth account
     final result = await _repository.signUp(email: email, password: password);
-    print('process starting');
+    logger.d('process starting');
 
     await result.fold(
       (failure) async {
@@ -46,7 +47,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
           errorMessage: failure.message,
         );
 
-        print(state.errorMessage);
+        logger.e(state.errorMessage);
       },
 
       (user) async {

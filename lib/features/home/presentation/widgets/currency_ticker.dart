@@ -68,7 +68,7 @@ class _CurrencyTickerState extends ConsumerState<CurrencyTicker>
         // Duplicate so the reset is invisible
         final doubled = [...entries, ...entries];
 
-        return Container(
+        return SizedBox(
           height: 36,
           child: ListView.builder(
             controller: _scrollController,

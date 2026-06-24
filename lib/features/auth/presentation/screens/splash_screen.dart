@@ -7,6 +7,7 @@ import 'package:pocketflow/core/local_storage/local_storage_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/app_logger.dart';
 import '../providers/auth_provider.dart';
 import '../providers/auth_state.dart';
 
@@ -49,20 +50,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   Future<void> _bootstrap() async {
     try {
-      print('🚀 bootstrap started');
+      logger.d('🚀 bootstrap started');
 
       final authNotifier = ref.read(authNotifierProvider.notifier);
       final localService = ref.read(localStorageProvider);
 
-      print('⏳ checking session...');
+      logger.d('⏳ checking session...');
       await authNotifier.checkSession();
-      print('✅ session checked');
+      logger.d('✅ session checked');
 
       final status = ref.read(authNotifierProvider).status;
-      print('📌 auth status: $status');
+      logger.d('📌 auth status: $status');
 
       final hasSeenOnboarding = await localService.getOnboardingStatus();
-      print('📌 hasSeenOnboarding: $hasSeenOnboarding');
+      logger.d('📌 hasSeenOnboarding: $hasSeenOnboarding');
 
       if (!mounted) {
         return;
@@ -77,10 +78,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       }
     } catch (e, stack) {
       if (kDebugMode) {
-        print('💥 bootstrap error: $e');
+        logger.d('💥 bootstrap error: $e');
       }
       if (kDebugMode) {
-        print(stack);
+        logger.d(stack);
       }
     }
   }

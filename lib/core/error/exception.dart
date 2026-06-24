@@ -115,11 +115,11 @@ class AppException implements Exception {
             return NotFoundException(errorMessage, code: statusCode.toString());
           case 409:
             return ConflictException(errorMessage, code: statusCode.toString());
-          case 422: // Unprocessable Entity
-            return ValidationException(
-              errorMessage,
-              code: statusCode.toString(),
-            );
+          // case 422: // Unprocessable Entity
+          //   return ValidationException(
+          //     errorMessage,
+          //     code: statusCode.toString(),
+          //   );
           case 500:
             return ServerException(errorMessage, code: statusCode.toString());
           default:
