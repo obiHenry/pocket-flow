@@ -32,7 +32,10 @@ class DashboardPage extends ConsumerWidget {
               children: [
                 // 2. If Desktop/Tablet, the Sidebar is a permanent part of the Row
                 if (showPermanentSidebar)
-                  const SizedBox(width: 280, child: AppDrawer(isPermanent: true)),
+                  const SizedBox(
+                    width: 280,
+                    child: AppDrawer(isPermanent: true),
+                  ),
 
                 // 3. The Main Content (Wallet Core)
                 Expanded(child: child),

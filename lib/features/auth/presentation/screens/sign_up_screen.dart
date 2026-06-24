@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pocketflow/core/utils/app_validator.dart';
 import '../../../../core/config/router/route_names.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_spacing.dart';
-import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/helper_functions.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_text_field.dart';
@@ -41,7 +41,11 @@ class SignUpScreen extends ConsumerWidget {
       }
       if (next.status == AuthStatus.authenticated) {
         if (next.errorMessage != null) {
-          HelperFunctions.showSnackBar(next.errorMessage!, context, isError: true);
+          HelperFunctions.showSnackBar(
+            next.errorMessage!,
+            context,
+            isError: true,
+          );
         } else {
           HelperFunctions.showSnackBar('Success', context, isError: false);
         }
@@ -57,13 +61,14 @@ class SignUpScreen extends ConsumerWidget {
             constraints: BoxConstraints(maxWidth: maxWidth),
             child: Form(
               key: _formKey,
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppSpacing.vXl,
+                  AppSpacing.vXxl,
                   Text("Create Account", style: AppTextStyles.h1),
-                  AppSpacing.vLg,
 
+                  AppSpacing.vLg,
                   AppTextField(
                     hint: "Full Name",
                     controller: nameController,
@@ -71,7 +76,6 @@ class SignUpScreen extends ConsumerWidget {
                   ),
 
                   AppSpacing.vMd,
-
                   AppTextField(
                     hint: "Email",
                     controller: emailController,
@@ -79,7 +83,6 @@ class SignUpScreen extends ConsumerWidget {
                   ),
 
                   AppSpacing.vMd,
-
                   AppTextField(
                     hint: "Password",
                     controller: passwordController,
@@ -88,7 +91,6 @@ class SignUpScreen extends ConsumerWidget {
                   ),
 
                   AppSpacing.vLg,
-
                   AppButton(
                     text: "Sign Up",
                     isLoading:
@@ -107,7 +109,6 @@ class SignUpScreen extends ConsumerWidget {
                   ),
 
                   AppSpacing.vLg,
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -133,11 +134,9 @@ class SignUpScreen extends ConsumerWidget {
                   ),
 
                   AppSpacing.vLg,
-
                   const Center(child: Text("OR")),
 
                   AppSpacing.vMd,
-
                   SocialButton.google(
                     isLoading:
                         isLoading &&

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pocketflow/core/constants/app_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pocketflow/core/theme/app_text_styles.dart';
 
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../../../exchange_rates/presentation/providers/exchange_rate_provider.dart';
 
@@ -67,7 +68,7 @@ class CardStack extends ConsumerWidget {
                       "₦${balance.toStringAsFixed(2)}",
                       style: AppTextStyles.h1.copyWith(
                         color: Colors.white,
-                        fontSize: 32,
+                        fontSize: 18.sp,
                       ),
                     ),
 
@@ -75,7 +76,7 @@ class CardStack extends ConsumerWidget {
                       " ≈ \$${(balance / (exchangeRate['USD'] ?? 1)).toStringAsFixed(2)}",
                       style: AppTextStyles.h1.copyWith(
                         color: Colors.white,
-                        fontSize: 32,
+                        fontSize: 18.sp,
                       ),
                     ),
                   ],

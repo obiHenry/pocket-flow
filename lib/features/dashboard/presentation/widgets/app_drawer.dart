@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pocketflow/core/constants/app_spacing.dart';
+import 'package:pocketflow/core/theme/app_spacing.dart';
 import 'package:pocketflow/features/dashboard/presentation/widgets/drawer_tile.dart';
 
 import '../../../../core/config/router/route_names.dart';

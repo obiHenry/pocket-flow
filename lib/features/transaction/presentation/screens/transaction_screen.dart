@@ -8,7 +8,7 @@ import 'package:pocketflow/shared/widgets/app_scaffold.dart';
 import 'package:pocketflow/shared/widgets/app_text_field.dart';
 
 import '../../../../core/animations/animation_helper.dart';
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../widgets/transaction_section.dart';
 import '../widgets/filter_chip_row.dart';

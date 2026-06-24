@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pocketflow/core/constants/app_spacing.dart';
+import 'package:pocketflow/core/theme/app_spacing.dart';
 import 'package:pocketflow/features/transaction/presentation/providers/transaction_provider.dart';
 
 import '../../../../core/animations/animation_helper.dart';

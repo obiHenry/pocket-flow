@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pocketflow/core/config/router/route_names.dart';
 
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_spacing.dart';
-import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/local_storage/local_storage_provider.dart';
 import '../../../../shared/widgets/app_button.dart' show AppButton;
 
@@ -126,9 +126,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     ),
                   ),
                 ),
-                AppSpacing.vMd,
+                // AppSpacing.vMd,
 
-                // ... (Progress Indicators)
+                // // ... (Progress Indicators)
                 AppButton(
                   text: currentIndex == pages.length - 1
                       ? "Get Started"

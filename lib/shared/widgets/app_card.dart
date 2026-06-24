@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_sizes.dart';
+import '../../core/theme/app_sizes.dart';
 
 class AppCard extends StatelessWidget {
   final Widget child;

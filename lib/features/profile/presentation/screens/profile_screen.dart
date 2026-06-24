@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pocketflow/shared/widgets/app_scaffold.dart';
 
 import '../../../../core/animations/animation_helper.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_spacing.dart';
-import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../providers/user_provider.dart';

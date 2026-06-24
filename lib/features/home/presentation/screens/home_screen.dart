@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pocketflow/features/transaction/presentation/providers/transaction_provider.dart';
 
 import '../../../../core/animations/animation_helper.dart';
-import '../../../../core/constants/app_spacing.dart';
-import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../widgets/balance_card.dart';
 import '../widgets/currency_ticker.dart';

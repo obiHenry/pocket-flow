@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pocketflow/core/constants/app_colors.dart';
+import 'package:pocketflow/core/theme/app_colors.dart';
 import 'package:pocketflow/features/transaction/data/models/transaction_model.dart';
 import 'package:pocketflow/features/transaction/presentation/widgets/transaction_skeleton.dart';
 
-import '../../../../core/constants/app_spacing.dart';
-import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/helper_functions.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../providers/transaction_provider.dart';
